@@ -1,6 +1,7 @@
 # OAuth
 
-#####Generate token(POST)#######\\n
+#####Generate token(POST)#######
+
 URL: http://localhost:8080/oauth/token
 Authorization : Basic
 UserName  client
@@ -19,8 +20,10 @@ Responnse
     "scope": "read write"
 }
 
+--------------------------------
 
-########Validate token
+########Validate token#######
+
 URL: http://localhost:8080/oauth/check_token
 Authorization : Basic
 UserName  client
@@ -44,6 +47,7 @@ Responnse
     ]
 }
 
+-----------------------
 
 #Logout Get
 http://localhost:8080/oauth/revoke-token?token=b4fcc618-337b-4bc2-8c79-d96dcbf55501
