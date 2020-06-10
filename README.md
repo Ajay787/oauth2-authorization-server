@@ -1,4 +1,4 @@
-# OAuth
+# oauth2-authorization-server
 
 #####Generate token(POST)#######
 
