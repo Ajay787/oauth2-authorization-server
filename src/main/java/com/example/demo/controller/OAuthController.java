@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,17 +20,17 @@ public class OAuthController {
     @RequestMapping(value = "/oauth/revoke-token", method = RequestMethod.GET)
     @ResponseStatus(code = HttpStatus.OK)
     public void logout(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null) {
-            String tokenValue = authHeader.replace("Bearer", "").trim();
-            System.out.println(tokenStore.findTokensByClientId("client"));
-            System.out.println("tokenValue "+tokenValue);
-          //OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
+        String inputRefreshToken = request.getHeader("refresh_token");
+        if (inputRefreshToken != null) {
+//            OAuth2AccessToken accessToken = tokenStore.readAccessToken(request.getParameter("token"));
             
-            OAuth2AccessToken accessToken = tokenStore.readAccessToken(request.getParameter("token"));
-            System.out.println(request.getParameter("token"));
-            System.out.println("accessToken "+tokenStore.readAccessToken(request.getParameter("token")));
-            tokenStore.removeAccessToken(accessToken);
+            OAuth2RefreshToken refreshToken = tokenStore.readRefreshToken(inputRefreshToken);
+            if(null!=refreshToken) {
+            	tokenStore.removeAccessTokenUsingRefreshToken(refreshToken);
+            	tokenStore.removeRefreshToken(refreshToken);
+            }
+            
+            
         }
     }
 }

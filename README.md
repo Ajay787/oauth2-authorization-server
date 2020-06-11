@@ -61,7 +61,11 @@ Responnse
 
 #Logout Get
 
-http://localhost:8080/oauth/revoke-token?token=b4fcc618-337b-4bc2-8c79-d96dcbf55501
+http://localhost:8080/oauth/revoke-token
+
+InHeader
+
+refresh_token b4fcc618-337b-4bc2-8c79-d96dcbf55501
 
 
 
