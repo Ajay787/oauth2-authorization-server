@@ -7,8 +7,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -17,16 +19,24 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Bean(name = "authenticationManager")
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Bean(name = "authenticationManager")
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("user").password(passwordEncoder.encode("secret")).roles("USER");
-        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder.encode("secret")).roles("ADMIN");
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("user").password(passwordEncoder.encode("secret")).roles("USER");
+//        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder.encode("secret")).roles("ADMIN");
+//    }
+    
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    protected AuthenticationManager getAuthenticationManager() throws Exception {
+        return super.authenticationManagerBean();
     }
     
     
@@ -37,12 +47,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .requestMatchers().anyRequest()
             .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/*","/logout").permitAll().and()
-                .logout()
-    			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                .antMatchers("/oauth//revoke-token").permitAll()
+//                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+    			;
         // @formatter:on
     }
     
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
     
 	/*
 	 * @Autowired public void configureGlobal(final AuthenticationManagerBuilder
