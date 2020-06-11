@@ -18,11 +18,13 @@ public class UserService {
 	
 	public User getUserByLoginId(String loginId) {
 		User user = userDao.getUserByLoginId(loginId);
-		
+		if(user==null) {
+			return null;
+		}
 		Set<Role> roles= new HashSet<Role>();
 		Role role = new Role();
 		role.setRole_id(1);
-		role.setRole("admin");
+		role.setRole("ROLE_ADMIN");
 		roles.add(role);
 		user.setRoles(roles);
 		

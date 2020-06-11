@@ -47,7 +47,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .requestMatchers().anyRequest()
             .and()
                 .authorizeRequests()
-                .antMatchers("/oauth//revoke-token").permitAll()
+                .antMatchers("/oauth/revoke-token").permitAll()
 //                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
     			;
         // @formatter:on
