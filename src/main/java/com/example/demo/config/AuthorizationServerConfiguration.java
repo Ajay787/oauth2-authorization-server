@@ -38,16 +38,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private TokenStore tokenStore;
-    
-    
-    
-//    private JdbcTemplate jdbcTemplate;
-//    
-//    @Autowired
-//	@Qualifier("dataSource")
-//	public void setDataSource(DataSource dataSource) {
-//		this.jdbcTemplate = new JdbcTemplate(dataSource);
-//	}
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -55,26 +46,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-    
-    
-    @Bean
-    public DataSource dataSource() {
-        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/myOAuth?useSSL=false");
-        dataSource.setUsername("root");
-        dataSource.setPassword("Root@123");
-        System.out.println(dataSource);
-        return dataSource;
-    }
-    @Bean
-    public TokenStore tokenStore() {
-      
-//    	System.out.println("DATSOURCE------------"+jdbcTemplate);
-//    	return new JdbcTokenStore(jdbcTemplate.getDataSource());
-//      return new InMemoryTokenStore();
-    	return new JdbcTokenStore(dataSource());
     }
 
 
@@ -105,8 +76,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         endpoints
                 .authenticationManager(authenticationManager)
                 .tokenStore(tokenStore).userDetailsService(userDetailsService);
-       
-        System.out.println(endpoints.isUserDetailsServiceOverride());
     }
 
 

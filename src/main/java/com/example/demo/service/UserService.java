@@ -22,10 +22,15 @@ public class UserService {
 			return null;
 		}
 		Set<Role> roles= new HashSet<Role>();
-		Role role = new Role();
-		role.setRole_id(1);
-		role.setRole("ROLE_ADMIN");
-		roles.add(role);
+//		Role role = new Role();
+//		role.setRole_id(1);
+		//role.setRole("ROLE_ADMIN");
+//		role.setRole("admin");
+//		roles.add(role);
+		for(Role eachRole:userDao.getRoleForLoginId(loginId)) {
+			roles.add(eachRole);
+		}
+		System.out.println(roles);
 		user.setRoles(roles);
 		
 		return user;
